@@ -17,37 +17,36 @@ fn part1(input: &str) -> u32 {
     }).sum()
 }
 
+const TEXT_DIGITS: [&str; 9] = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+
 fn part2(input: &str) -> u32 {
-    const TEXT_DIGITS: [&str; 9] = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
-
     input.lines().map(|l| {
-        let mut first: Option<u32> = None;
-        let mut last: Option<u32> = None;
-
-        let mut window = l;
-        while let Some(next_char) = window.chars().next() {
-            if let Some(digit) = next_char.to_digit(10)
-                .or_else(|| TEXT_DIGITS.iter()
-                    .enumerate()
-                    .filter(|(_, d)| window.starts_with(*d))
-                    .map(|(i, _)| (i + 1) as u32)
-                    .next()) {
-                if first.is_none() {
-                    first = Some(digit);
+        let (first, last) = (0..l.len())
+            .map(|i| &l[i..])
+            .fold((None, None), |acc @ (first, _), w| {
+                if let Some(digit) = parse_digit(w) {
+                    (first.or(Some(digit)), Some(digit))
+                } else {
+                    acc
                 }
-                last = Some(digit);
-            }
-
-            window = &window[1..];
-        }
+            });
 
         first.unwrap() * 10 + last.unwrap()
     }).sum()
 }
 
+fn parse_digit(input: &str) -> Option<u32> {
+    let next_char = input.chars().next()?;
+    next_char.to_digit(10).or_else(|| TEXT_DIGITS.iter()
+        .enumerate()
+        .filter(|(_, d)| input.starts_with(*d))
+        .map(|(i, _)| (i + 1) as u32)
+        .next())
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{part1, part2};
+    use crate::{parse_digit, part1, part2, TEXT_DIGITS};
 
     #[test]
     fn test1() {
@@ -70,5 +69,21 @@ zoneight234
 7pqrstsixteen";
 
         assert_eq!(281, part2(input));
+    }
+
+    #[test]
+    fn test_parse_digit() {
+        for (i, digit) in TEXT_DIGITS.iter().enumerate() {
+            assert_eq!(parse_digit(digit), Some(i as u32 + 1));
+        }
+
+        for i in 1..=9 {
+            let digit = char::from_digit(i, 10).unwrap();
+            assert_eq!(parse_digit(&format!("{}", digit)), Some(i));
+        }
+
+        assert_eq!(parse_digit("a1"), None);
+        assert_eq!(parse_digit("1abcd"), Some(1));
+        assert_eq!(parse_digit("oneabcd"), Some(1));
     }
 }
