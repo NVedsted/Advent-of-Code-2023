@@ -10,9 +10,9 @@ fn main() {
 
 fn part1(input: &str) -> u32 {
     input.lines().map(|l| {
-        let mut digits = l.chars().filter(|c| c.is_ascii_digit());
-        let first = digits.next().unwrap().to_digit(10).unwrap();
-        let last = digits.last().map(|c| c.to_digit(10).unwrap()).unwrap_or(first);
+        let mut digits = l.chars().filter_map(|c| c.to_digit(10));
+        let first = digits.next().unwrap();
+        let last = digits.last().unwrap_or(first);
         first * 10 + last
     }).sum()
 }
