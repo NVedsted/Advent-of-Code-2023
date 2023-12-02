@@ -32,7 +32,7 @@ struct Game {
 
 impl Game {
     fn possible_with(&self, reveal: &Reveal) -> bool {
-        self.reveals.iter().all(|r| r.is_subset_of(&reveal))
+        self.reveals.iter().all(|r| r.is_subset_of(reveal))
     }
 
     fn minimum_set(&self) -> Reveal {
