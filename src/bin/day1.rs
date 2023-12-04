@@ -1,11 +1,6 @@
-use std::io::Read;
-
 fn main() {
-    let mut input = String::new();
-    std::io::stdin().read_to_string(&mut input).unwrap();
-
-    println!("Part 1: {}", part1(&input));
-    println!("Part 2: {}", part2(&input));
+    let input = aoc2023::read_input_as_string();
+    aoc2023::print_day(part1(&input), part2(&input));
 }
 
 fn part1(input: &str) -> u32 {

@@ -1,8 +1,5 @@
-use std::io::Read;
-
 fn main() {
-    let mut input = String::new();
-    std::io::stdin().read_to_string(&mut input).unwrap();
+    let input = aoc2023::read_input_as_string();
     let (parts, labels) = parse_schematic(&input);
 
     println!("Part 1: {}", part1(&parts, &labels));
