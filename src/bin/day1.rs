@@ -1,3 +1,5 @@
+use itertools::Itertools;
+
 fn main() {
     aoc2023::run_day(aoc2023::read_input_as_string, part1, part2);
 }
@@ -26,9 +28,8 @@ fn part2(input: &str) -> u32 {
 fn parse_digit(input: &str) -> Option<u32> {
     let next_char = input.chars().next()?;
     next_char.to_digit(10).or_else(|| TEXT_DIGITS.iter()
-        .enumerate()
-        .filter(|(_, d)| input.starts_with(*d))
-        .map(|(i, _)| (i + 1) as u32)
+        .positions(|d| input.starts_with(*d))
+        .map(|i| (i + 1) as u32)
         .next())
 }
 

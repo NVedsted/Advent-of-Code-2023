@@ -1,3 +1,5 @@
+use itertools::Itertools;
+
 fn main() {
     aoc2023::run_day(|| parse_schematic(&aoc2023::read_input_as_string()), part1, part2);
 }
@@ -45,8 +47,7 @@ struct Part {
 impl Part {
     fn gear_power(&self, labels: &[Label]) -> Option<usize> {
         let mut associated_labels = labels.iter().filter(|l| l.is_associated_with_part(self));
-        let first = associated_labels.next()?;
-        let second = associated_labels.next()?;
+        let (first, second) = associated_labels.next_tuple()?;
 
         if associated_labels.next().is_none() {
             Some(first.number * second.number)
