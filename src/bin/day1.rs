@@ -1,6 +1,5 @@
 fn main() {
-    let input = aoc2023::read_input_as_string();
-    aoc2023::print_day(part1(&input), part2(&input));
+    aoc2023::run_day(aoc2023::read_input_as_string, part1, part2);
 }
 
 fn part1(input: &str) -> u32 {

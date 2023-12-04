@@ -1,16 +1,12 @@
 fn main() {
-    let input = aoc2023::read_input_as_string();
-    let (parts, labels) = parse_schematic(&input);
-
-    println!("Part 1: {}", part1(&parts, &labels));
-    println!("Part 2: {}", part2(&parts, &labels));
+    aoc2023::run_day(|| parse_schematic(&aoc2023::read_input_as_string()), part1, part2);
 }
 
-fn part1(parts: &[Part], labels: &[Label]) -> usize {
+fn part1((parts, labels): &(Vec<Part>, Vec<Label>)) -> usize {
     labels.iter().filter(|l| l.has_associated_part(parts)).map(|l| l.number).sum()
 }
 
-fn part2(parts: &[Part], labels: &[Label]) -> usize {
+fn part2((parts, labels): &(Vec<Part>, Vec<Label>)) -> usize {
     parts.iter().filter_map(|p| p.gear_power(labels)).sum()
 }
 
@@ -95,6 +91,17 @@ fn try_read_digits(input: &str) -> Option<(usize, usize)> {
 mod tests {
     use crate::{try_read_digits, parse_schematic, part1, part2, Label, Part};
 
+    const EXAMPLE_INPUT: &str = "467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..";
+
     #[test]
     fn test_parse_input() {
         assert_eq!(try_read_digits("123"), Some((3, 123)));
@@ -104,34 +111,12 @@ mod tests {
 
     #[test]
     fn test1() {
-        let input = "467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598..";
-        let (parts, labels) = parse_schematic(input);
-        assert_eq!(part1(&parts, &labels), 4361);
+        assert_eq!(part1(&parse_schematic(EXAMPLE_INPUT)), 4361);
     }
 
     #[test]
     fn test2() {
-        let input = "467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598..";
-        let (parts, labels) = parse_schematic(input);
-        assert_eq!(part2(&parts, &labels), 467835);
+        assert_eq!(part2(&parse_schematic(EXAMPLE_INPUT)), 467835);
     }
 
     #[test]

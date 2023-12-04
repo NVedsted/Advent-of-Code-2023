@@ -1,10 +1,8 @@
 use std::cmp::max;
 use std::str::FromStr;
-use aoc2023::print_day;
 
 fn main() {
-    let games = aoc2023::parse_lines_from_stdin();
-    print_day(part1(&games), part2(&games));
+    aoc2023::run_day(aoc2023::parse_lines_from_stdin, part1, part2);
 }
 
 fn part1(games: &[Game]) -> usize {
