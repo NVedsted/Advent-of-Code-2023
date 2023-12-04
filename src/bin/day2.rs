@@ -3,7 +3,7 @@ use std::str::FromStr;
 use aoc2023::print_day;
 
 fn main() {
-    let games = aoc2023::parse_input_lines();
+    let games = aoc2023::parse_lines_from_stdin();
     print_day(part1(&games), part2(&games));
 }
 

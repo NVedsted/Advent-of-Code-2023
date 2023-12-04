@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use std::str::FromStr;
 
 fn main() {
-    let cards = aoc2023::parse_input_lines::<ScratchCard>();
+    let cards = aoc2023::parse_lines_from_stdin::<ScratchCard>();
     aoc2023::print_day(part1(&cards), part2(&cards));
 }
 

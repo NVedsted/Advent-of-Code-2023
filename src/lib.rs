@@ -13,7 +13,7 @@ pub fn read_input_as_string() -> String {
     input
 }
 
-pub fn parse_input_lines<T: FromStr>() -> Vec<T> where T::Err: Debug {
+pub fn parse_lines_from_stdin<T: FromStr>() -> Vec<T> where T::Err: Debug {
     std::io::stdin()
         .lines()
         .map(|l| l.unwrap().parse().unwrap())
