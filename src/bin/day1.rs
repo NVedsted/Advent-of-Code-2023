@@ -18,15 +18,11 @@ fn part2(input: &str) -> u32 {
     input.lines().map(|l| {
         let (first, last) = (0..l.len())
             .map(|i| &l[i..])
-            .fold((None, None), |acc @ (first, _), w| {
-                if let Some(digit) = parse_digit(w) {
-                    (first.or(Some(digit)), Some(digit))
-                } else {
-                    acc
-                }
-            });
+            .fold((None, None), |acc @ (first, _), w| parse_digit(w)
+                .map(|digit| (first.or(Some(digit)), Some(digit)))
+                .unwrap_or(acc));
 
-        first.unwrap() * 10 + last.unwrap()
+        first.zip(last).map(|(first, last)| first * 10 + last).unwrap()
     }).sum()
 }
 
