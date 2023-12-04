@@ -16,10 +16,8 @@ const TEXT_DIGITS: [&str; 9] = ["one", "two", "three", "four", "five", "six", "s
 fn part2(input: &str) -> u32 {
     input.lines().map(|l| {
         let (first, last) = (0..l.len())
-            .map(|i| &l[i..])
-            .fold((None, None), |acc @ (first, _), w| parse_digit(w)
-                .map(|digit| (first.or(Some(digit)), Some(digit)))
-                .unwrap_or(acc));
+            .filter_map(|i| parse_digit(&l[i..]))
+            .fold((None, None), |(first, _), digit| (first.or(Some(digit)), Some(digit)));
 
         first.zip(last).map(|(first, last)| first * 10 + last).unwrap()
     }).sum()
