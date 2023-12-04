@@ -1,5 +1,5 @@
 [package]
-name = "Advent-of-Code-2023"
+name = "aoc2023"
 authors = ["Nicklas Vedsted"]
 description = "Advent of Code 2023 implementation"
 repository = "https://github.com/NVedsted/Advent-of-Code-2023"
