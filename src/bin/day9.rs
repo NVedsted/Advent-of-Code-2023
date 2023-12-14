@@ -26,7 +26,7 @@ fn stabilize(start: Vec<i32>) -> Vec<Vec<i32>> {
     let mut rows = vec![start];
 
     while rows.last().unwrap().iter().any(|n| *n != 0) {
-        let mut next = vec![];
+        let mut next = Vec::with_capacity(rows.last().unwrap().len() - 1);
 
         for window in rows.last().unwrap().windows(2) {
             next.push(window[1] - window[0]);
