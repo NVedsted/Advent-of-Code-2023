@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 use itertools::Itertools;
+use num::Integer;
 use crate::Direction::{Left, Right};
 
 fn main() {
@@ -31,20 +32,11 @@ fn solve_one<F: Fn([char; 3]) -> bool>(context: &Context, start: Name, end_condi
 }
 
 fn part2(context: &Context) -> usize {
-    let periods = context.junctions.keys()
+    context.junctions.keys()
         .filter(|k| k[2] == 'A')
         .cloned()
         .map(|start| solve_one(context, start, |c| c[2] == 'Z'))
-        .collect_vec();
-
-    let biggest_period = *periods.iter().max().unwrap();
-
-    let mut current = biggest_period;
-    while !periods.iter().all(|p| current % p == 0) {
-        current += biggest_period;
-    }
-
-    current
+        .reduce(|acc, e| acc.lcm(&e)).unwrap()
 }
 
 struct Context {
