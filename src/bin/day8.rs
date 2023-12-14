@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::str::FromStr;
-use itertools::Itertools;
+use itertools::{FoldWhile, Itertools};
 use num::Integer;
 use crate::Direction::{Left, Right};
 
@@ -13,22 +13,22 @@ fn part1(context: &Context) -> usize {
 }
 
 fn solve_one<F: Fn([char; 3]) -> bool>(context: &Context, start: Name, end_condition: F) -> usize {
-    let mut current = start;
+    context.directions.iter()
+        .cycle()
+        .fold_while((start, 0), |(current, i), direction| {
+            let (left, right) = &context.junctions[&current];
 
-    for (i, direction) in context.directions.iter().cycle().enumerate() {
-        let (left, right) = &context.junctions[&current];
+            let next = match direction {
+                Left => *left,
+                Right => *right,
+            };
 
-        current = match direction {
-            Left => *left,
-            Right => *right,
-        };
-
-        if end_condition(current) {
-            return i + 1;
-        }
-    }
-
-    0
+            if end_condition(next) {
+                FoldWhile::Done((next, i + 1))
+            } else {
+                FoldWhile::Continue((next, i + 1))
+            }
+        }).into_inner().1
 }
 
 fn part2(context: &Context) -> usize {
